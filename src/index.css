@@ -1,4 +1,40 @@
 body {
- 
+ /*global style*/
+}
+
+#container{
+    width: 40vw;
+    height: 70vh;
+    margin-top: 10vh;
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    grid-template-rows: 20% 40% 40%;
+    grid-template-columns: 50% 50%;
+    background-color: black;
+}
+
+#main-title{
+    grid-row: 1;
+    grid-column: 1 / 3;
+    background-color: red;
+}
+
+#slength{
+    grid-row: 2 / 3;
+    grid-column: 1;
+    background-color: blue;
+}
+
+#blength{
+    grid-row: 2 / 3;
+    grid-column: 2;
+    background-color: green;
+}
+
+#controls-div{
+    grid-row: 3;
+    grid-column: 1 / 3;
+    background-color: yellow;
 }
 

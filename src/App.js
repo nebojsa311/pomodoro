@@ -18,13 +18,13 @@ class App extends React.Component {
     return(
       <div id="container">
         <div id="main-title">Pomodoro clock</div>
-        <div class="length">
+        <div id="slength">
           <div id="session-label">Session length</div>
           <div id="session-length">{this.state.sessionL / 60000}</div>
           <div id="session-increment"></div>
           <div id="session-decrement"></div>
         </div>
-        <div class="length">
+        <div id="blength">
           <div id="break-label">Break length</div>
           <div id="break-length">{this.state.breakL / 60000}</div>
           <div id="break-increment"></div>
