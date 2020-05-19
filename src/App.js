@@ -21,14 +21,14 @@ class App extends React.Component {
         <div id="slength">
           <div id="session-label">Session length</div>
           <div id="session-length">{this.state.sessionL / 60000}</div>
-          <div id="session-increment"></div>
-          <div id="session-decrement"></div>
+          <div id="session-increment">+</div>
+          <div id="session-decrement">-</div>
         </div>
         <div id="blength">
           <div id="break-label">Break length</div>
           <div id="break-length">{this.state.breakL / 60000}</div>
-          <div id="break-increment"></div>
-          <div id="break-decrement"></div>
+          <div id="break-increment">+</div>
+          <div id="break-decrement">-</div>
         </div>
         <div id="controls-div">
           <div id="timer-label">{this.state.timerLabel}</div>
