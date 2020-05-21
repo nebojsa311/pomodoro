@@ -21,20 +21,28 @@ class App extends React.Component {
         <div id="slength">
           <div id="session-label">Session length</div>
           <div id="session-length">{this.state.sessionL / 60000}</div>
-          <div id="session-increment">+</div>
-          <div id="session-decrement">-</div>
+          <div id="session-increment">
+            <i class="fas fa-plus-square fa-3x"></i>
+          </div>
+          <div id="session-decrement">
+            <i class="fas fa-minus-square fa-3x"></i>
+          </div>
         </div>
         <div id="blength">
           <div id="break-label">Break length</div>
           <div id="break-length">{this.state.breakL / 60000}</div>
-          <div id="break-increment">+</div>
-          <div id="break-decrement">-</div>
+          <div id="break-increment">
+            <i class="fas fa-plus-square fa-3x"></i>
+          </div>
+          <div id="break-decrement">
+            <i class="fas fa-minus-square fa-3x"></i>
+          </div>
         </div>
         <div id="controls-div">
           <div id="timer-label">{this.state.timerLabel}</div>
           <div id="time-left">{(this.state.timer - this.state.timer%60000)/60000}:{this.state.timer/1000 - ((this.state.timer - this.state.timer%60000)/1000)}</div>
-          <div id="start_stop"></div>
-          <div id="reset"></div>
+          <div id="start_stop"><i class="fas fa-play-circle fa-3x"></i></div>
+          <div id="reset"><i class="fas fa-undo fa-3x"></i></div>
         </div>
       </div>
 
