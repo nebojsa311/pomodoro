@@ -14,6 +14,8 @@ class App extends React.Component {
       playButton: false,
       minutes: 1500000,
       seconds: 0,
+      minutesForDisplay: 25,
+      secondsForDisplay:"00",
       sessionIs: true,
     }
     // Methods binding .this
@@ -58,36 +60,61 @@ class App extends React.Component {
 
   // Reset and play/pause buttons
   reset() {
-    this.setState( { breakL: 300000, sessionL: 1500000, minutes: 1500000, seconds: 0, playButton: false} )
+    this.setState( { breakL: 300000, sessionL: 1500000, minutes: 1500000, seconds: 0, playButton: false, minutesForDisplay: 25, secondsForDisplay:"00"} )
   }
 
   play(){
-  
+       
       //when seconds hit zero, substract one minute and seconds start from 60 again
     if(this.state.seconds === 0  && this.state.minutes > 0){
       this.setState((state) => {
-        return {minutes: state.minutes - 60000, seconds: 60000}
+        return { minutes: state.minutes - 60000, seconds: 60000, secondsForDisplay: state.seconds / 1000, minutesForDisplay: state.minutes / 60000 }
       })
     }
     
     //Timer start and goes on
-    if(this.state.seconds >= 0){
+    if(this.state.seconds > 0){
       this.setState((state) => {
-        return {seconds: state.seconds - 1000};
+        return {seconds: state.seconds - 1000, secondsForDisplay: (state.seconds - 1000) / 1000, minutesForDisplay: state.minutes / 60000 };
+      })
+    }
+    // when seconds are zero
+    if(this.state.seconds === 0){
+      this.setState((state) => {
+        return  {  secondsForDisplay: state.seconds / 1000 }
       })
     }
     // When there is no more time and session is ended
     if(this.state.minutes === 0 && this.state.seconds === 0 && this.state.sessionIs === true){
       this.setState((state) => {
-        return {minutes: state.breakL - 60000, seconds: 60000, sessionIs: false, timerLabel: "Break"}
+        return {minutes: state.breakL - 60000,  sessionIs: false, timerLabel: "Break", minutesForDisplay: state.minutes / 60000}
 
       })
     }
     // when there is no more time and break is ended
+    
     if(this.state.minutes === 0 && this.state.seconds === 0 && this.state.sessionIs === false){
       this.setState((state) => {
-        return {minutes: state.sessionL - 60000, seconds: 60000, sessionIs: true, timerLabel: "Session"}
+        return {minutes: state.sessionL - 60000, seconds: 60000, secondsForDisplay: state.seconds / 1000, sessionIs: true, timerLabel: "Session", minutesForDisplay: state.minutes / 60000}
       });
+
+  //Adding leading zero
+  if(this.state.minutesForDisplay < 10){
+    this.setState((state) => {
+      return {minutesForDisplay: "0" + state.minutes / 60000}
+    })
+  }
+
+  if(this.state.secondsForDisplay === 0){
+    this.setState((state) => {
+      return {secondsForDisplay: "0" + state.seconds / 60000}
+    })
+  }
+  
+  if(this.state.secondsForDisplay < 10){
+    this.setState((state) => {
+      return {secondsForDisplay: "0" + state.seconds / 1000}
+    })
   }
 }
 // Down there is three functions, 1st is for playing, second is pause that clears interval and stops, and 3rd is switch for first two
@@ -117,6 +144,11 @@ class App extends React.Component {
       document.getElementById("icon").classList.add("fas");
       document.getElementById("icon").classList.add("fa-pause");
       document.getElementById("icon").classList.add("fa-3x");
+    } else {
+      document.getElementById("icon").classList.remove("fa-pause");
+      document.getElementById("icon").classList.add("fas");
+      document.getElementById("icon").classList.add("fa-play-circle");
+      document.getElementById("icon").classList.add("fa-3x");
     }
   }
 
@@ -140,25 +172,25 @@ class App extends React.Component {
           <div id="session-label">Session length</div>
           <div id="session-length">{this.state.sessionL / 60000}</div>
           <div id="session-increment">
-            <i class="fas fa-plus-square fa-3x"></i>
+            <i className="fas fa-plus-square fa-3x"></i>
           </div>
           <div id="session-decrement">
-            <i class="fas fa-minus-square fa-3x"></i>
+            <i className="fas fa-minus-square fa-3x"></i>
           </div>
         </div>
         <div id="blength">
           <div id="break-label">Break length</div>
           <div id="break-length">{this.state.breakL / 60000}</div>
           <div id="break-increment">
-            <i class="fas fa-plus-square fa-3x"></i>
+            <i className="fas fa-plus-square fa-3x"></i>
           </div>
           <div id="break-decrement">
-            <i class="fas fa-minus-square fa-3x"></i>
+            <i className="fas fa-minus-square fa-3x"></i>
           </div>
         </div>
         <div id="controls-div">
           <div id="timer-label">{this.state.timerLabel}</div>
-          <div id="time-left">{this.state.minutes / 60000}:{this.state.seconds / 1000}</div>
+          <div id="time-left">{this.state.minutesForDisplay.toString()}:{this.state.secondsForDisplay.toString()}</div>
           <div id="start_stop"><i id="icon" className="fas fa-play-circle fa-3x"></i></div>
           <div id="reset"><i className="fas fa-undo fa-3x"></i></div>
         </div>
