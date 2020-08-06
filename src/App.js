@@ -36,13 +36,13 @@ class App extends React.Component {
   // Increment and decrement methods for session and break lengths
   incrementS(){
     if(this.state.sessionL <= 3599999){
-      this.setState( { sessionL: this.state.sessionL + 60000, minutes: this.state.sessionL + 60000, seconds: 0 } )
+      this.setState( { sessionL: this.state.sessionL + 60000, minutes: this.state.sessionL + 60000, seconds: 0, minutesForDisplay: (this.state.sessionL + 60000)/ 60000 } )
     }
   }
 
   decrementS(){
     if(this.state.sessionL >= 60001){
-      this.setState( { sessionL: this.state.sessionL - 60000, minutes: this.state.sessionL - 60000, seconds: 0 } )
+      this.setState( { sessionL: this.state.sessionL - 60000, minutes: this.state.sessionL - 60000, seconds: 0, minutesForDisplay: (this.state.sessionL - 60000) / 60000  } )
     }
   }
 
@@ -61,6 +61,12 @@ class App extends React.Component {
   // Reset and play/pause buttons
   reset() {
     this.setState( { breakL: 300000, sessionL: 1500000, minutes: 1500000, seconds: 0, playButton: false, minutesForDisplay: 25, secondsForDisplay:"00"} )
+    this.switcherToStop();
+    this.pauseIcon();
+    /*switcherToStop(){
+      clearInterval(this.intervalId);
+      this.setState({playButton: false})
+    }*/
   }
 
   play(){
@@ -105,6 +111,12 @@ class App extends React.Component {
     })
   }
 
+  if(this.state.minutesForDisplay === 0){
+    this.setState((state) => {
+      return {minutesForDisplay: "0" + state.minutes / 60000}
+    })
+  }
+
   if(this.state.secondsForDisplay === 0){
     this.setState((state) => {
       return {secondsForDisplay: "0" + state.seconds / 60000}
@@ -116,6 +128,7 @@ class App extends React.Component {
       return {secondsForDisplay: "0" + state.seconds / 1000}
     })
   }
+}
 }
 // Down there is three functions, 1st is for playing, second is pause that clears interval and stops, and 3rd is switch for first two
   switcherToPlay(){
