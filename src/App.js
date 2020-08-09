@@ -70,65 +70,19 @@ class App extends React.Component {
   }
 
   play(){
-       
-      //when seconds hit zero, substract one minute and seconds start from 60 again
-    if(this.state.seconds === 0  && this.state.minutes > 0){
-      this.setState((state) => {
-        return { minutes: state.minutes - 60000, seconds: 60000, secondsForDisplay: state.seconds / 1000, minutesForDisplay: state.minutes / 60000 }
-      })
+    //adding leading zero if muntes are under 10
+    if(this.state.minutes / 60000 < 10 && this.state.minutes / 60000 > 1){
+      if(this.state.seconds === 0){
+        return this.setState( { minutes: this.state.minutes - 60000, seconds: 60000,  minutesForDisplay: "0" + this.state.minutes / 60000, secondsForDisplay: "00" } )
+      } else if(this.state.seconds > 0){
+        if(this.state.seconds < 10){
+          return this.setState( { minutesForDisplay: "0" + this.state.minutes / 60000, seconds: this.state.seconds - 1000, secondsForDisplay: "0" + this.state.seconds / 1000} )
+        } else if(this.state.seconds > 10){
+          return this.setState( { minutesForDisplay: "0" + this.state.minutes / 60000, seconds: this.state.seconds - 1000, secondsForDisplay:this.state.seconds / 1000} )
+        }
+        
+      }
     }
-    
-    //Timer start and goes on
-    if(this.state.seconds > 0){
-      this.setState((state) => {
-        return {seconds: state.seconds - 1000, secondsForDisplay: (state.seconds - 1000) / 1000, minutesForDisplay: state.minutes / 60000 };
-      })
-    }
-    // when seconds are zero
-    if(this.state.seconds === 0){
-      this.setState((state) => {
-        return  {  secondsForDisplay: state.seconds / 1000 }
-      })
-    }
-    // When there is no more time and session is ended
-    if(this.state.minutes === 0 && this.state.seconds === 0 && this.state.sessionIs === true){
-      this.setState((state) => {
-        return {minutes: state.breakL - 60000,  sessionIs: false, timerLabel: "Break", minutesForDisplay: state.minutes / 60000}
-
-      })
-    }
-    // when there is no more time and break is ended
-    
-    if(this.state.minutes === 0 && this.state.seconds === 0 && this.state.sessionIs === false){
-      this.setState((state) => {
-        return {minutes: state.sessionL - 60000, seconds: 60000, secondsForDisplay: state.seconds / 1000, sessionIs: true, timerLabel: "Session", minutesForDisplay: state.minutes / 60000}
-      });
-
-  //Adding leading zero
-  if(this.state.minutesForDisplay < 10){
-    this.setState((state) => {
-      return {minutesForDisplay: "0" + state.minutes / 60000}
-    })
-  }
-
-  if(this.state.minutesForDisplay === 0){
-    this.setState((state) => {
-      return {minutesForDisplay: "0" + state.minutes / 60000}
-    })
-  }
-
-  if(this.state.secondsForDisplay === 0){
-    this.setState((state) => {
-      return {secondsForDisplay: "0" + state.seconds / 60000}
-    })
-  }
-  
-  if(this.state.secondsForDisplay < 10){
-    this.setState((state) => {
-      return {secondsForDisplay: "0" + state.seconds / 1000}
-    })
-  }
-}
 }
 // Down there is three functions, 1st is for playing, second is pause that clears interval and stops, and 3rd is switch for first two
   switcherToPlay(){
@@ -203,7 +157,7 @@ class App extends React.Component {
         </div>
         <div id="controls-div">
           <div id="timer-label">{this.state.timerLabel}</div>
-          <div id="time-left">{this.state.minutesForDisplay.toString()}:{this.state.secondsForDisplay.toString()}</div>
+          <div id="time-left">{this.state.minutesForDisplay}:{this.state.secondsForDisplay}</div>
           <div id="start_stop"><i id="icon" className="fas fa-play-circle fa-3x"></i></div>
           <div id="reset"><i className="fas fa-undo fa-3x"></i></div>
         </div>
