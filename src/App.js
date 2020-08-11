@@ -73,12 +73,12 @@ class App extends React.Component {
     //adding leading zero if muntes are under 10
     if(this.state.minutes / 60000 < 10 && this.state.minutes / 60000 > 1){
       if(this.state.seconds === 0){
-        return this.setState( { minutes: this.state.minutes - 60000, seconds: 60000,  minutesForDisplay: "0" + this.state.minutes / 60000, secondsForDisplay: "00" } )
-      } else if(this.state.seconds > 0){
-        if(this.state.seconds < 10){
-          return this.setState( { minutesForDisplay: "0" + this.state.minutes / 60000, seconds: this.state.seconds - 1000, secondsForDisplay: "0" + this.state.seconds / 1000} )
-        } else if(this.state.seconds > 10){
-          return this.setState( { minutesForDisplay: "0" + this.state.minutes / 60000, seconds: this.state.seconds - 1000, secondsForDisplay:this.state.seconds / 1000} )
+        return this.setState( { minutes: this.state.minutes - 60000, seconds: 60000 ,  minutesForDisplay: "0" + this.state.minutes / 60000, secondsForDisplay: "00" } )
+      }  else if(this.state.seconds > 0){
+        if(this.state.seconds / 1000 <= 10){
+          return this.setState( { minutesForDisplay: "0" + this.state.minutes / 60000, seconds: this.state.seconds - 1000, secondsForDisplay: "0" + (this.state.seconds - 1000) / 1000 } )
+        } else if(this.state.seconds / 1000 > 10){
+          return this.setState( { minutesForDisplay: "0" + this.state.minutes / 60000, seconds: this.state.seconds - 1000, secondsForDisplay: (this.state.seconds - 1000) / 1000} )
         }
         
       }
