@@ -60,7 +60,7 @@ class App extends React.Component {
 
   // Reset and play/pause buttons
   reset() {
-    this.setState( { breakL: 300000, sessionL: 1500000, minutes: 1500000, seconds: 0, playButton: false, minutesForDisplay: 25, secondsForDisplay:"00"} )
+    this.setState( { breakL: 300000, sessionL: 1500000, minutes: 1500000, seconds: 0, playButton: false, minutesForDisplay: 25, secondsForDisplay:"00", timerLabel: "Session"} )
     this.switcherToStop();
     this.pauseIcon();
     /*switcherToStop(){
@@ -71,12 +71,12 @@ class App extends React.Component {
 
   play(){
     //adding leading zero if muntes are under 10
-    if(this.state.minutes / 60000 < 10 && this.state.minutes / 60000 > 1){
+    if(this.state.minutes / 60000 < 10 && this.state.minutes / 60000 >= 1){
 
       if(this.state.seconds === 0 && this.state.playButton === false ){
         return this.setState( { minutes: this.state.minutes - 60000, seconds: 60000 ,  minutesForDisplay: "0" + this.state.minutes / 60000, secondsForDisplay: "00" } )
         } else if(this.state.seconds === 0 && this.state.playButton === true){
-          return this.setState( { minutes: this.state.minutes - 60000, seconds: 59000 ,  minutesForDisplay: "0" + this.state.minutes / 60000, secondsForDisplay: 59 } )
+          return this.setState( { minutes: this.state.minutes - 60000, seconds: 59000 ,  minutesForDisplay: "0" + (this.state.minutes - 60000) / 60000, secondsForDisplay: 59 } )
         } else if(this.state.seconds > 0){
 
         if(this.state.seconds / 1000 <= 10 && this.state.seconds / 1000 >= 1){
@@ -85,6 +85,42 @@ class App extends React.Component {
           return this.setState( { minutesForDisplay: "0" + this.state.minutes / 60000, seconds: this.state.seconds - 1000, secondsForDisplay: (this.state.seconds - 1000) / 1000} )
         }
         
+      }
+    }
+
+    // when is more than 9 minutes left
+    if(this.state.minutes / 60000 > 10){
+
+      if(this.state.seconds === 0 && this.state.playButton === false ){
+        return this.setState( { minutes: this.state.minutes - 60000, seconds: 60000 ,  minutesForDisplay: this.state.minutes / 60000, secondsForDisplay: "00" } )
+        } else if(this.state.seconds === 0 && this.state.playButton === true){
+          return this.setState( { minutes: this.state.minutes - 60000, seconds: 59000 ,  minutesForDisplay: (this.state.minutes - 60000) / 60000, secondsForDisplay: 59 } )
+        } else if(this.state.seconds > 0){
+
+        if(this.state.seconds / 1000 <= 10 && this.state.seconds / 1000 >= 1){
+          return this.setState( { minutesForDisplay: this.state.minutes / 60000, seconds: this.state.seconds - 1000, secondsForDisplay: "0" + (this.state.seconds - 1000) / 1000 } )
+        } else if(this.state.seconds / 1000 > 10){
+          return this.setState( { minutesForDisplay: this.state.minutes / 60000, seconds: this.state.seconds - 1000, secondsForDisplay: (this.state.seconds - 1000) / 1000} )
+        }
+        
+      }
+    }
+
+    // When countdown reaches one minute, going for 00:00
+    if(this.state.minutes === 60000 && this.state.seconds === 0){
+      return this.setState( { minutes: 0, seconds: 59000, secondsForDisplay: 59, minutesForDisplay: "00" } )
+    } else if(this.state.minutes === 0 && this.state.seconds / 1000 > 10){
+      return this.setState( { seconds: this.state.seconds - 1000, secondsForDisplay: (this.state.seconds - 1000) / 1000 } )
+    } else if(this.state.minutes === 0 && this.state.seconds / 1000 <= 10 && this.state.seconds / 1000 > 0){
+      return this.setState( { seconds: this.state.seconds - 1000, secondsForDisplay: "0" + (this.state.seconds - 1000) / 1000 } )
+    }
+
+    // switching session and break when timer reaches zero
+    if(this.state.minutes === 0 && this.state.seconds === 0){
+      if(this.state.sessionIs === true){
+        return this.setState( { minutes: this.state.breakL - 60000, seconds: 60000, sessionIs: false, timerLabel: "Break", playButton: false } )
+      } else if(this.state.sessionIs === false){
+        return this.setState( { minutes: this.state.sessionL - 60000, seconds: 60000, sessionIs: true, timerLabel: "Session", playButton: false } )
       }
     }
 }
